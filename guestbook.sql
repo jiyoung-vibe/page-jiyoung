@@ -15,4 +15,8 @@ comment on column guestbook.created_at is '작성 시각';
 alter table guestbook enable row level security;
 create policy "누구나 읽기" on guestbook for select using (true);
 create policy "누구나 쓰기" on guestbook for insert with check (true);
+
 -- 고치기·지우기 정책은 없다 → 공개 키로는 아무도 고치거나 지울 수 없다
+-- 공개 키(anon)로 들어온 사람에게 읽기·쓰기를 허락한다.
+-- 새 프로젝트는 SQL로 만든 표를 공개 키에 자동으로 열지 않는다. 이 줄이 없으면 401 오류가 난다.
+grant select, insert on table guestbook to anon, authenticated;
